@@ -7,6 +7,7 @@ import org.olmedo.apiservlet.webapp.buscadordecursos.repositories.Respositorio;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 public class CursoServiceImpl implements CursoService{
     private Respositorio<Curso> respository;
@@ -32,5 +33,32 @@ public class CursoServiceImpl implements CursoService{
         } catch (SQLException e) {
             throw new ServiceJdbcException(e.getMessage(), e.getCause());
         }
+    }
+
+    @Override
+    public Optional<Curso> porId(Long id) {
+        try {
+            return Optional.ofNullable(respository.porId(id));
+        } catch (SQLException e) {
+            throw new ServiceJdbcException(e.getMessage(), e.getCause());
+        }
+    }
+
+    @Override
+    public void guardar(Curso curso) {
+        try {
+            respository.guardar(curso);
+        } catch (SQLException e) {
+            throw new ServiceJdbcException(e.getMessage(), e.getCause());
+        }
+    }
+
+    @Override
+    public void eliminar(Long id) {
+       try {
+           respository.eliminar(id);
+       } catch (SQLException e) {
+           throw new ServiceJdbcException(e.getMessage(), e.getCause());
+       }
     }
 }
