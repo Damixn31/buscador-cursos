@@ -1,62 +1,58 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"
-        import="java.util.*, org.olmedo.apiservlet.webapp.buscadordecursos.models.*"%>
-<%
-Map<String, String> errores = (Map<String, String>) request.getAttribute("errores");
-Curso curso = (Curso) request.getAttribute("curso");
-String titulo = (String) request.getAttribute("titulo");
-%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title><%=titulo%></title>
+    <title>${titulo}</title>
 </head>
 <body>
-<h1><%=titulo%></h1>
-<p><a href="<%=request.getContextPath()%>/cursos">volver</a></p>
-<form action="<%=request.getContextPath()%>/cursos/form" method="post">
+<h1>${titulo}</h1>
+<p><a href="${pageContext.request.contextPath}/cursos">volver</a></p>
+<form action="${pageContext.request.contextPath}/cursos/form" method="post">
     <div>
         <label for="nombre">Nombre</label>
         <div>
-            <input type="text" name="nombre" id="nombre" value="<%=curso.getNombre() != null ? curso.getNombre() : ""%>">
+            <input type="text" name="nombre" id="nombre" value="${curso.nombre}">
         </div>
-        <% if(errores != null && errores.containsKey("nombre")){%>
-        <div style="color:red;"><%=errores.get("nombre")%></div>
-        <%}%>
+        <c:if test="${errores != null && errores.containsKey('nombre')}">
+            <div style="color:red;">${errores.nombre}</div>
+        </c:if>
     </div>
 
     <div>
         <label for="instructor">Instructor</label>
         <div>
-            <input type="text" name="instructor" id="instructor" value="<%=curso.getInstructor() != null ? curso.getInstructor() : ""%>">
+            <input type="text" name="instructor" id="instructor" value="${curso.instructor}">
         </div>
-        <% if(errores != null && errores.containsKey("instructor")){%>
-        <div style="color:red;"><%=errores.get("instructor")%></div>
-        <%}%>
+       <c:if test="${errores != null && errores.containsKey('instructor')}">
+           <div style="color:red;">${errores.instructor}</div>
+       </c:if>
     </div>
 
     <div>
         <label for="duracion">Duracion</label>
         <div>
-            <input type="number" name="duracion" id="duracion" value="<%=curso.getDuracion() != null ? curso.getDuracion() : ""%>">
+            <input type="number" name="duracion" id="duracion" value="${curso.duracion > 0 ? curso.duracion : ""}">
         </div>
-        <%if(errores != null && errores.containsKey("duracion")){%>
-        <div style="color:red;"><%=errores.get("duracion")%></div>
-        <%}%>
+        <c:if test="${errores != null && not empty errores.duracion}">
+              <div style="color:red;">${errores.duracion}</div>
+        </c:if>
     </div>
 
     <div>
         <label for="descripcion">Descripcion</label>
         <div>
-            <textarea name="descripcion" id="descripcion"><%=curso.getDescripcion() != null ? curso.getDescripcion() : ""%></textarea>
+            <textarea name="descripcion" id="descripcion">${curso.descripcion != null ? curso.descripcion : ""}</textarea>
         </div>
-        <%if(errores != null && errores.containsKey("descripcion")){%>
-        <div style="color:red;"><%=errores.get("descripcion")%></div>
-        <%}%>
+        <c:if test="${errores != null && errores.containsKey('descripcion')}">
+            <div style="color:red;">${errores.descripcion}</div>
+        </c:if>
     </div>
 
-  <div><input type="submit" value="<%=(curso.getId() != null && curso.getId() > 0) ? "Editar" : "Crear"%>"></div>
-  <input type="hidden" name="id" value="<%=curso.getId()%>">
+  <div><input type="submit" value="${curso.id != null && curso.id > 0 ? "Editar" : "Crear"}"></div>
+  <input type="hidden" name="id" value="${curso.id}">
 </form>
 </body>
 </html>
